@@ -84,4 +84,24 @@ $.getJSON("classes/ajax_util.php",
 
 $(document).ready(function() {
 	//every 2 seconds, get new ratings and store in atom_ratings["id"+obj.id], update size of icons/icons
+	
+	var auto_refresh = setInterval( function () {
+		
+		var bounds = map.getBounds();
+		var southWest = bounds.getSouthWest();
+		var northEast = bounds.getNorthEast();
+		var aminlng = southWest.lng();
+		var aminlat = southWest.lat();
+		var amaxlng = northEast.lng();
+		var amaxlat = northEast.lat();
+		
+		$.getJSON("classes/ajax_util.php",
+		  { action: "get_recent_rankings", minlng:aminlng, minlat:aminlat, maxlng:amaxlng, maxlat:amaxlat }, function(data) {
+				//atom_ratings["id"+obj.id] = data;
+				console.log(aminlng+" "+aminlat+" "+amaxlng+" "+amaxlat+" ");
+				console.log(data);
+		});
+	}, 5000);
+	
+	//map.setCenter(initialLocation);
 });
