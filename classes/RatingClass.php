@@ -89,11 +89,11 @@ class RatingClass {
 		global $mysqli;
 		
 		$arr = array();
-		$stmt2 = $mysqli->prepare("SELECT title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 30");
+		$stmt2 = $mysqli->prepare("SELECT id, title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 30");
 		$stmt2->execute();
-		$stmt2->bind_result($title, $desc, $cat, $lat, $lng);
+		$stmt2->bind_result($id, $title, $desc, $cat, $lat, $lng);
 		while ($stmt2->fetch()) {
-			$arr[] = array("title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng);
+			$arr[] = array("id" => $id, "title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng);
 		}
 		
 		$stmt2->close();
