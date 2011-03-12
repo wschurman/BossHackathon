@@ -58,7 +58,7 @@
 					<option value="mymetropcs.com">Metro PCS</option>
 				</select>
 				<br /><br />
-			<input type="submit" value="Bitch, Please." />
+			<input type="submit" value="Subscribe" />
 		</div>
 	</form>
 	
