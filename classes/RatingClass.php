@@ -99,6 +99,21 @@ class RatingClass {
 		$stmt2->close();
 		echo json_encode($arr);
 	}
+	
+	public function atom_select() {
+		global $mysqli;
+		
+		$s = "";
+		$stmt2 = $mysqli->prepare("SELECT id, title FROM atoms ORDER BY title ASC");
+		$stmt2->execute();
+		$stmt2->bind_result($id, $title);
+		while ($stmt2->fetch()) {
+			$s .= "<option value='$id'>$title</option>\n";
+		}
+		
+		$stmt2->close();
+		echo $s;
+	}
 }
 
 ?>

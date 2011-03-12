@@ -158,3 +158,23 @@ body {
 	left:0;
 	z-index:2;
 }
+
+#add_ranking {
+	position:fixed;
+	background:#fff;
+	border:1px solid #000;
+	bottom:0;
+	left:0;
+	z-index:100;
+	padding:10px 50px;
+}
+
+#stars a {
+	color:#888;
+}
+#stars a:hover {
+	border:0;
+}
+#stars a.sel {
+	color:#111;
+}

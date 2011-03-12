@@ -79,7 +79,6 @@ $.getJSON("classes/ajax_util.php",
 	for (spot in data) {
 		createMarker(data[spot]);
 	}
-	mCenter = map.getCenter();
 });
 
 $(document).ready(function() {
@@ -100,6 +99,14 @@ $(document).ready(function() {
 				//atom_ratings["id"+obj.id] = data;
 				console.log(aminlng+" "+aminlat+" "+amaxlng+" "+amaxlat+" ");
 				console.log(data);
+				
+				for(res in data) {
+					var aid = data[res].atom_id;
+					atom_ratings["id"+aid].push(data[res]);
+					
+					var mark = markers[storestr(aid)];
+					setTimeout(clickmarker(mark, aid), 500);
+				}
 		});
 	}, 5000);
 	
