@@ -26,9 +26,9 @@ function clearMarkers() {
 	$("#spot_list ul").html("");
 }
 
-var latlng = new google.maps.LatLng(42.448221, -76.489538);
+var latlng = new google.maps.LatLng(42.449335,-76.484282);
 var myOptions = {
-	zoom: 17,
+	zoom: 16,
 	center: latlng,
 	minZoom: 3,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
