@@ -19,16 +19,16 @@ class RatingClass {
 	
 	public function addPhone($phone, $carrier, $atom_id) {
 		global $mysqli;
-		$stmt = $mysqli->prepare("INSERT IGNORE INTO phones (phone, provider, atom_id) VALUES (?, ?, ?)");
-		$stmt->bind_param("ssi", $phone, $carrier, $atom_id);
-		$stmt->execute();
-		$result = $mysqli->prepare("SELECT LAST_INSERT_ID()");
-		$result->execute();
-		$result->bind_result($bid);
-		$result->fetch();
-		$stmt->close();
-		$result->close();
-		return $bid;
+		// $stmt = $mysqli->prepare("INSERT IGNORE INTO phones (phone, provider, atom_id) VALUES (?, ?, ?)");
+		// 		$stmt->bind_param("ssi", $phone, $carrier, $atom_id);
+		// 		$stmt->execute();
+		// 		$result = $mysqli->prepare("SELECT LAST_INSERT_ID()");
+		// 		$result->execute();
+		// 		$result->bind_result($bid);
+		// 		$result->fetch();
+		// 		$stmt->close();
+		// 		$result->close();
+		// 		return $bid;
 	}
 	
 	public function addRanking($rank, $comment, $atom_id) {
@@ -52,14 +52,14 @@ class RatingClass {
 		$stmt->close();
 		$result->close();
 		
-		$stmt3 = $mysqli->prepare("SELECT phone, provider FROM phones WHERE atom_id = ?");
-		$stmt3->bind_param("i", $atom_id);
-		$stmt3->execute();
-		$stmt3->bind_result($phone, $provider);
-		while ($stmt3->fetch()) {
-			mail($phone."@".$provider, "BO$$ Comment Notification", $comment);
-		}
-		$stmt3->close();
+		// $stmt3 = $mysqli->prepare("SELECT phone, provider FROM phones WHERE atom_id = ?");
+		// 		$stmt3->bind_param("i", $atom_id);
+		// 		$stmt3->execute();
+		// 		$stmt3->bind_result($phone, $provider);
+		// 		while ($stmt3->fetch()) {
+		// 			mail($phone."@".$provider, "BO$$ Comment Notification", $comment);
+		// 		}
+		// 		$stmt3->close();
 		
 		
 		
