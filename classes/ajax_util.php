@@ -50,6 +50,12 @@ try {
 			$review = filter_var($_GET["review"], FILTER_SANITIZE_STRING);
 
 			$data = $controller->addRanking($stars, $review, $atomid);
+			echo $data;
+		case "get_average":
+			$atomid = filter_var($_GET["atom"], FILTER_SANITIZE_NUMBER_INT);
+
+			$data = $controller->getAverage($atomid);
+			echo $data;
         break;
 			case "add_phone":
 				$phone = filter_var($_GET["phone"], FILTER_SANITIZE_NUMBER_INT);

@@ -7,9 +7,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title></title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <title>GeoMapChan | 4chan + ACB + Map</title>
+  <meta name="description" content="awesome">
+  <meta name="author" content="Dem Bo$$es">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -21,14 +21,13 @@
 </head>
 
 <body>
-
+	<script type="text/javascript">
+	var rank_atom_id;
+	var phone_atom_id;
+	</script>
   <div id="map"></div> 
 	<form id="add_ranking" method="post">
 		<div class="review_content">
-			<select id="atoms" name="atoms">
-				<?php include("classes/dropdown.php"); ?>
-			</select>
-			<br /><br />
 			<div id="stars">
 				Rating:
 				<a id="s1" title="1">&#9733;</a>
@@ -37,18 +36,14 @@
 				<a id="s4" title="4">&#9733;</a>
 				<a id="s5" title="5">&#9733;</a>
 			</div>
-			<textarea name="review_box" id="review_box" placeholder="write a review..." class="required" minlength="2"></textarea>
+			<textarea name="review_box" id="review_box" placeholder="write a review..." class="required" minlength="2"></textarea><br /><br />
 			<input type="submit" value="Post" />
 		</div>
 	</form>
 	
 	<form id="add_phone" method="post">
 		<div class="review_content">
-			<select id="atoms2" name="atoms">
-				<?php include("classes/dropdown.php"); ?>
-			</select>
-			<br /><br />
-			Phone Number: <input type="text" id="number" name="number" /><br />
+			Phone Number: <input type="text" id="number" name="number" /><br /><br />
 			Carrier: 
 				<select id="carrier" name="carrier">
 					<option value="tmomail.net">T-mobile</option>
@@ -62,6 +57,7 @@
 					<option value="sms.mycricket.com">Cricket</option>
 					<option value="mymetropcs.com">Metro PCS</option>
 				</select>
+				<br /><br />
 			<input type="submit" value="Bitch, Please." />
 		</div>
 	</form>
@@ -98,35 +94,22 @@
 
 	$("#add_ranking").submit(function() {
 	      $.getJSON("classes/ajax_util.php",
-		  { action: "add_ranking", atom:$("#atoms").val(), stars:numstars, review:$("#review_box").val() }, function(data) {
-			$("#review_box").val("");
+		  { action: "add_ranking", atom:rank_atom_id, stars:numstars, review:$("#review_box").val() }, function(data) {
 		});
+		$("#review_box").val("");
+		$("#add_ranking").hide();
 	      return false;
 	    });
 	
 		$("#add_phone").submit(function() {
 		      $.getJSON("classes/ajax_util.php",
-			  { action: "add_phone", atom:$("#atoms2").val(), phone:$("#number").val(), carrier:$("#carrier").val() }, function(data) {
-				$("#number").val("");
+			  { action: "add_phone", atom:phone_atom_id, phone:$("#number").val(), carrier:$("#carrier").val() }, function(data) {
 			});
+			$("#number").val("");
+			$("#add_phone").hide();
 		      return false;
 		    });
 	</script>  
-
-<!-- end scripts-->
-
-  <!--[if lt IE 7 ]>
-    <script src="js/libs/dd_belatedpng.js"></script>
-    <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
-  <![endif]-->
-
-
-  <script>
-    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']]; // Change UA-XXXXX-X to be your site's ID
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
-  </script>
 
 </body>
 </html>

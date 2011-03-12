@@ -61,14 +61,46 @@ class RatingClass {
 		}
 		$stmt3->close();
 		
-		return $bid;
+		
+		
+		$alpha = 0.4;
+		$stmt4 = $mysqli->prepare("SELECT avg FROM atoms WHERE id = ?");
+		$stmt4->bind_param("i", $atom_id);
+		$stmt4->execute();
+		$stmt4->bind_result($average);
+		$stmt4->fetch();
+		if($average == 0) {
+			$new_average = $rank;
+		} else {
+			$new_average = $alpha * $average + (1.0 - $alpha) * $rank;
+		}
+		$stmt4->close();
+		
+		
+		$stmt5 = $mysqli->prepare("UPDATE atoms SET avg = ? WHERE id = ?");
+		$stmt5->bind_param("di", $new_average, $atom_id);
+		$stmt5->execute();
+		$stmt5->close();
+
+		return $new_average;
+	}
+	
+	public function getAverage($atom_id) {
+		global $mysqli;
+		$stmt4 = $mysqli->prepare("SELECT avg FROM atoms WHERE id = ?");
+		$stmt4->bind_param("i", $atom_id);
+		$stmt4->execute();
+		$stmt4->bind_result($average);
+		$stmt4->fetch();
+		$stmt4->close();
+		return $average;
 	}
 	
 	public function get_recent_rankings($minlat, $maxlat, $minlon, $maxlon) {
 		global $mysqli;
 		
 		$arr = array();
-		$stmt = $mysqli->prepare("SELECT id, rank, comment, time, atom_id, lng, lat FROM rankings WHERE lng >= '$minlon' AND lng <= '$maxlon' AND lat >= '$minlat' AND lat <= '$maxlat' AND time > CURRENT_TIMESTAMP - 5 LIMIT 20");
+		$stmt = $mysqli->prepare("SELECT id, rank, comment, time, atom_id, lng, lat FROM rankings WHERE lng >= '$minlon' AND lng <= '$maxlon' AND lat >= '$minlat' AND lat <= '$maxlat' AND time > CURRENT_TIMESTAMP - 4 LIMIT 20");
 		$stmt->execute();
 		$stmt->bind_result($rid, $rank, $comment, $time, $atom_id, $lng, $lat);
 		while ($stmt->fetch()) {
@@ -108,12 +140,12 @@ class RatingClass {
 	
 	public function get_atom($atom_id) {
 		global $mysqli;
-		$stmt2 = $mysqli->prepare("SELECT title, description, category_id, lat, lng FROM atoms WHERE id = ? LIMIT 1");
+		$stmt2 = $mysqli->prepare("SELECT title, description, category_id, lat, lng, avg FROM atoms WHERE id = ? LIMIT 1");
 		$stmt2->bind_param("i", $atom_id);
 		$stmt2->execute();
-		$stmt->bind_result($title, $desc, $cat, $lat, $lng);
+		$stmt->bind_result($title, $desc, $cat, $lat, $lng, $avg);
 		$stmt2->fetch();
-		$arr = array("title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng);
+		$arr = array("title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng, "avg" => $avg);
 		$stmt2->close();
 		echo json_encode($arr);
 	}
@@ -122,11 +154,11 @@ class RatingClass {
 		global $mysqli;
 		
 		$arr = array();
-		$stmt2 = $mysqli->prepare("SELECT id, title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 60");
+		$stmt2 = $mysqli->prepare("SELECT id, title, description, category_id, lat, lng, avg FROM atoms ORDER BY id DESC LIMIT 100");
 		$stmt2->execute();
-		$stmt2->bind_result($id, $title, $desc, $cat, $lat, $lng);
+		$stmt2->bind_result($id, $title, $desc, $cat, $lat, $lng, $avg);
 		while ($stmt2->fetch()) {
-			$arr[] = array("id" => $id, "title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng);
+			$arr[] = array("id" => $id, "title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng, "avg" => $avg);
 		}
 		
 		$stmt2->close();
