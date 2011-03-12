@@ -137,3 +137,24 @@ a:hover { color: #036; }
   h2, h3{ page-break-after: avoid; }
 }
 
+body {
+	height: 100%;
+	min-width:640px;
+	margin:0;
+	background-color:#000111;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke: 1px transparent;
+	text-rendering: optimizeLegibility;
+	text-decoration: none;
+	font-family: 'HelveticaNeue','Helvetica Neue','Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+
+#map {
+	display:block;
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:2;
+}

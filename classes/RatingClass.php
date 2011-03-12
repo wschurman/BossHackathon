@@ -31,11 +31,32 @@ class RatingClass {
 		return $bid;
 	}
 	
-	public function get_recent_rankings($minlat, $maxlat, $minlon, $maxlon ) {
+	public function get_recent_rankings($minlat, $maxlat, $minlon, $maxlon) {
 		global $mysqli;
 		
 		$arr = array();
 		$stmt = $mysqli->prepare("SELECT id, rank, comment, time, atom_id, lng, lat FROM rankings WHERE lng >= '$minlon' AND lng <= '$maxlon' AND lat >= '$minlat' AND lat <= '$maxlat' AND time > CURRENT_TIMESTAMP - 5 LIMIT 20");
+		$stmt->execute();
+		$stmt->bind_result($rid, $rank, $comment, $time, $atom_id, $lng, $lat);
+		while ($stmt->fetch()) {
+			$arr[] = array( 'id' => $rid,
+							'atom_id' => $atom_id,
+							'rank' => $rank,
+							'comment' => $comment,
+							'time' => $time,
+							'lng' => $lng,
+							'lat' => $lat
+						);
+		}
+		$stmt->close();
+		echo json_encode($arr);
+	}
+	
+	public function get_rankings_for_atom($atom_id) {
+		global $mysqli;
+		$arr = array();
+		$stmt = $mysqli->prepare("SELECT id, rank, comment, time, atom_id, lng, lat FROM rankings WHERE atom_id = ? LIMIT 20");
+		$stmt->bind_param("i", $atom_id );
 		$stmt->execute();
 		$stmt->bind_result($rid, $rank, $comment, $time, $atom_id, $lng, $lat);
 		while ($stmt->fetch()) {
@@ -68,11 +89,10 @@ class RatingClass {
 		global $mysqli;
 		
 		$arr = array();
-		$stmt2 = $mysqli->prepare("SELECT title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 1");
+		$stmt2 = $mysqli->prepare("SELECT title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 30");
 		$stmt2->execute();
-		$stmt->bind_result($title, $desc, $cat, $lat, $lng);
-		$stmt2->fetch();
-		while ($stmt->fetch()) {
+		$stmt2->bind_result($title, $desc, $cat, $lat, $lng);
+		while ($stmt2->fetch()) {
 			$arr[] = array("title" => $title, "desc" => $desc, "cat" => $cat, "lat" => $lat, "lng" => $lng);
 		}
 		
