@@ -17,10 +17,10 @@ class RatingClass {
 		return $bid;
 	}
 	
-	public function addRanking($rank, $comment, $atom_id) {
+	public function addPhone($phone, $carrier, $atom_id) {
 		global $mysqli;
-		$stmt = $mysqli->prepare("INSERT IGNORE INTO rankings (rank, comment, time, atom_id) VALUES (?, ?, NULL, ?)");
-		$stmt->bind_param("isi", $rank, $comment, $atom_id );
+		$stmt = $mysqli->prepare("INSERT IGNORE INTO phones (phone, provider, atom_id) VALUES (?, ?, ?)");
+		$stmt->bind_param("ssi", $phone, $carrier, $atom_id);
 		$stmt->execute();
 		$result = $mysqli->prepare("SELECT LAST_INSERT_ID()");
 		$result->execute();
@@ -28,6 +28,39 @@ class RatingClass {
 		$result->fetch();
 		$stmt->close();
 		$result->close();
+		return $bid;
+	}
+	
+	public function addRanking($rank, $comment, $atom_id) {
+		global $mysqli;
+		
+		$stmt2 = $mysqli->prepare("SELECT lat, lng FROM atoms WHERE id = ? LIMIT 1");
+		$stmt2->bind_param("i", $atom_id);
+		$stmt2->execute();
+		$stmt2->bind_result($lat, $lng);
+		$stmt2->fetch();
+		$stmt2->close();
+		
+		
+		$stmt = $mysqli->prepare("INSERT IGNORE INTO rankings (rank, comment, time, atom_id, lat, lng) VALUES (?, ?, NULL, ?, ?, ?)");
+		$stmt->bind_param("isidd", $rank, $comment, $atom_id, $lat, $lng );
+		$stmt->execute();
+		$result = $mysqli->prepare("SELECT LAST_INSERT_ID()");
+		$result->execute();
+		$result->bind_result($bid);
+		$result->fetch();
+		$stmt->close();
+		$result->close();
+		
+		$stmt3 = $mysqli->prepare("SELECT phone, provider FROM phones WHERE atom_id = ?");
+		$stmt3->bind_param("i", $atom_id);
+		$stmt3->execute();
+		$stmt3->bind_result($phone, $provider);
+		while ($stmt3->fetch()) {
+			mail($phone."@".$provider, "BO$$ Comment Notification", $comment);
+		}
+		$stmt3->close();
+		
 		return $bid;
 	}
 	
@@ -89,7 +122,7 @@ class RatingClass {
 		global $mysqli;
 		
 		$arr = array();
-		$stmt2 = $mysqli->prepare("SELECT id, title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 30");
+		$stmt2 = $mysqli->prepare("SELECT id, title, description, category_id, lat, lng FROM atoms ORDER BY id DESC LIMIT 60");
 		$stmt2->execute();
 		$stmt2->bind_result($id, $title, $desc, $cat, $lat, $lng);
 		while ($stmt2->fetch()) {

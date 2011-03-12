@@ -44,6 +44,20 @@ try {
 			$data = $controller->get_recent_rankings($minlat, $maxlat, $minlon, $maxlon);
 			echo $data;
 	        break;
+		case "add_ranking":
+			$atomid = filter_var($_GET["atom"], FILTER_SANITIZE_NUMBER_INT);
+			$stars = filter_var($_GET["stars"], FILTER_SANITIZE_NUMBER_INT);
+			$review = filter_var($_GET["review"], FILTER_SANITIZE_STRING);
+
+			$data = $controller->addRanking($stars, $review, $atomid);
+        break;
+			case "add_phone":
+				$phone = filter_var($_GET["phone"], FILTER_SANITIZE_NUMBER_INT);
+				$carrier = filter_var($_GET["carrier"], FILTER_SANITIZE_STRING);
+				$atomid = filter_var($_GET["atom"], FILTER_SANITIZE_NUMBER_INT);
+				//echo "p:$phone, c:$carrier, a:$atomid";
+				$data = $controller->addPhone($phone, $carrier, $atomid);
+		        break;
 		default:
 			throw new Exception("Invalid action.");
 	}

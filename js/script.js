@@ -65,7 +65,11 @@ function clickmarker(marker, id) {
 	s = "";
 	for(ranking in atom_ratings["id"+id]) {
 		console.log(ranking);
-		s += atom_ratings["id"+id][ranking].rank+" "+atom_ratings["id"+id][ranking].comment+"<br />";
+		var d = "";
+		for(var i = 0; i < parseInt(atom_ratings["id"+id][ranking].rank); i++) {
+			d += "&#9733;";
+		}
+		s += d+" "+atom_ratings["id"+id][ranking].comment+"<br />";
 	}
 	
 	lastInfoWindow = new google.maps.InfoWindow({

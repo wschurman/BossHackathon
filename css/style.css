@@ -169,6 +169,20 @@ body {
 	padding:10px 50px;
 }
 
+#add_phone {
+	position:fixed;
+	background:#fff;
+	border:1px solid #000;
+	bottom:0;
+	right:0;
+	z-index:100;
+	padding:10px 50px;
+}
+
+#stars {
+	font-family: "Times New Roman", Times, serif;
+}
+
 #stars a {
 	color:#888;
 }

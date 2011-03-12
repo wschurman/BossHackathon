@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
@@ -23,7 +23,7 @@
 <body>
 
   <div id="map"></div> 
-	<form id="add_ranking" action="classes/ajax_util.php" method="post">
+	<form id="add_ranking" method="post">
 		<div class="review_content">
 			<select id="atoms" name="atoms">
 				<?php include("classes/dropdown.php"); ?>
@@ -31,14 +31,38 @@
 			<br /><br />
 			<div id="stars">
 				Rating:
-				<a id="s1" title="1">&#x2605;</a>
-				<a id="s2" title="2">&#x2605;</a>
-				<a id="s3" title="3">&#x2605;</a>
-				<a id="s4" title="4">&#x2605;</a>
-				<a id="s5" title="5">&#x2605;</a>
+				<a id="s1" title="1">&#9733;</a>
+				<a id="s2" title="2">&#9733;</a>
+				<a id="s3" title="3">&#9733;</a>
+				<a id="s4" title="4">&#9733;</a>
+				<a id="s5" title="5">&#9733;</a>
 			</div>
 			<textarea name="review_box" id="review_box" placeholder="write a review..." class="required" minlength="2"></textarea>
 			<input type="submit" value="Post" />
+		</div>
+	</form>
+	
+	<form id="add_phone" method="post">
+		<div class="review_content">
+			<select id="atoms2" name="atoms">
+				<?php include("classes/dropdown.php"); ?>
+			</select>
+			<br /><br />
+			Phone Number: <input type="text" id="number" name="number" /><br />
+			Carrier: 
+				<select id="carrier" name="carrier">
+					<option value="tmomail.net">T-mobile</option>
+					<option value="vmobl.com">Virgin Mobile</option>
+					<option value="cingularme.com">Cingular</option>
+					<option value="messaging.sprintpcs.com">Sprint</option>
+					<option value="txt.att.net">AT&amp;T</option>
+					<option value="vtext.com">Verizon</option>
+					<option value="messaging.nextel.com">Nextel</option>
+					<option value="email.uscc.net">US Cellular</option>
+					<option value="sms.mycricket.com">Cricket</option>
+					<option value="mymetropcs.com">Metro PCS</option>
+				</select>
+			<input type="submit" value="Bitch, Please." />
 		</div>
 	</form>
 	
@@ -72,21 +96,21 @@
 	
 	$("#s3").click();
 
-	// $('#add_review').validate({
-	// 		submitHandler: function(form) { 
-	// 			$(form).ajaxSubmit({
-	// 				data: { action: 'add_review', rating_box: numstars, spot_id: <?php echo $spot_id ?> },
-	// 				success: function(resp) {
-	// 					$("#add_review").hide();
-	// 					$("#review_container ul").prepend(resp);
-	// 				},
-	// 				error: function(resp) { //board not found
-	// 					$("#add_review").html(resp);
-	// 				}
-	// 			});
-	// 			return false;
-	// 		}
-	// 	});
+	$("#add_ranking").submit(function() {
+	      $.getJSON("classes/ajax_util.php",
+		  { action: "add_ranking", atom:$("#atoms").val(), stars:numstars, review:$("#review_box").val() }, function(data) {
+			$("#review_box").val("");
+		});
+	      return false;
+	    });
+	
+		$("#add_phone").submit(function() {
+		      $.getJSON("classes/ajax_util.php",
+			  { action: "add_phone", atom:$("#atoms2").val(), phone:$("#number").val(), carrier:$("#carrier").val() }, function(data) {
+				$("#number").val("");
+			});
+		      return false;
+		    });
 	</script>  
 
 <!-- end scripts-->
